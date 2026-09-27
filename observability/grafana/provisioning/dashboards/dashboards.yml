@@ -1,0 +1,13 @@
+# Provisioned dashboard provider: loads any JSON dashboard from the mounted folder.
+apiVersion: 1
+
+providers:
+  - name: aiops
+    orgId: 1
+    folder: "AIOps"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards

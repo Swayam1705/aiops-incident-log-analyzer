@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Overview</h1>
+<p class="sub">Local AI-assisted incident analysis. Deterministic analysis first; the LLM is advisory only.</p>
+
+<div class="grid cols-4">
+  <div class="card stat"><span class="label">Incidents stored</span><span class="value" id="stat-incidents">–</span></div>
+  <div class="card stat"><span class="label">Ollama model</span><span class="value" id="stat-llm" style="font-size:15px">–</span></div>
+  <div class="card stat"><span class="label">Notification</span><span class="value" id="stat-notif" style="font-size:15px">–</span></div>
+  <div class="card stat"><span class="label">Workload simulator</span><span class="value" id="stat-sim" style="font-size:15px">–</span></div>
+</div>
+
+<div class="grid cols-2 mt">
+  <div class="card">
+    <h3>1 · Inject a deterministic failure</h3>
+    <p class="muted">Simulated workloads for evaluation. Nothing destructive is executed.</p>
+    <div class="row">
+      <select id="fault-select" class="select">
+        <option value="database-timeout">database-timeout</option>
+        <option value="memory-pressure">memory-pressure</option>
+        <option value="http-500-burst">http-500-burst</option>
+        <option value="dependency-timeout">dependency-timeout</option>
+        <option value="invalid-configuration">invalid-configuration</option>
+        <option value="liveness-failure">liveness-failure (probe demo)</option>
+      </select>
+      <button id="fault-btn">Inject</button>
+      <button id="fault-clear" class="ghost">Clear</button>
+    </div>
+    <div id="fault-output" class="mt"></div>
+  </div>
+
+  <div class="card">
+    <h3>2 · Run the analyzer</h3>
+    <p class="muted">Analyzes the latest bounded log window: collect → parse → correlate → severity → (advisory LLM) → report.</p>
+    <div class="row">
+      <button id="analyze-btn">Analyze now</button>
+      <a class="btn ghost" href="/ui/evaluation">Run evaluation</a>
+    </div>
+    <div id="analyze-output" class="mt"></div>
+  </div>
+</div>
+
+<h2>Recent incidents</h2>
+<div id="recent-incidents-state" class="hidden"></div>
+<div id="recent-incidents"></div>
+{% endblock %}

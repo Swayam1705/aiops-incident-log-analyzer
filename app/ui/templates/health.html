@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>System Health</h1>
+<p class="sub">Live component status, configuration (safe view — no secrets) and registered metrics.</p>
+<div class="row"><button id="health-refresh" class="ghost">Refresh</button>
+  <a class="btn ghost" href="/metrics" target="_blank" rel="noopener">Prometheus /metrics</a>
+  <a class="btn ghost" href="/health" target="_blank" rel="noopener">Raw /health JSON</a></div>
+<div id="health-detail" class="mt"><div class="state"><span class="spinner"></span> loading…</div></div>
+{% endblock %}

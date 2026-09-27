@@ -1,0 +1,14 @@
+# Provisioned Prometheus data source (infrastructure-as-code; no manual clicks).
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    # In compose the service name is "prometheus"; in kind use the in-cluster
+    # service DNS. Override with the GF-provisioned file mounted per environment.
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: "10s"

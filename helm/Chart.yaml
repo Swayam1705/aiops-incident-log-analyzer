@@ -1,0 +1,17 @@
+apiVersion: v2
+name: aiops-analyzer
+description: AIOps Incident & Log Analyzer - local AI-assisted incident analysis (zero cost)
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - aiops
+  - observability
+  - incidents
+  - logs
+  - llm
+maintainers:
+  - name: AIOps Project
+home: https://example.com/aiops-incident-log-analyzer
+sources:
+  - https://example.com/aiops-incident-log-analyzer

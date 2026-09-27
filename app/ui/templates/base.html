@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}AIOps Incident &amp; Log Analyzer{% endblock %}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%234f8cff'/%3E%3Cpath d='M5 15l4-6 3 4 3-7 4 9' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body data-page="{{ page }}" data-incident-id="{{ incident_id | default('') }}">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 24 24" aria-hidden="true">
+        <rect width="24" height="24" rx="5" fill="url(#g)"></rect>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4f8cff"></stop><stop offset="1" stop-color="#7c5cff"></stop>
+        </linearGradient></defs>
+        <path d="M5 15l4-6 3 4 3-7 4 9" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <div>
+        AIOps Incident &amp; Log Analyzer
+        <small>{{ app_name }} · local AI-assisted</small>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/ui/" class="{{ 'active' if page == 'overview' }}">Overview</a>
+      <a href="/ui/incidents" class="{{ 'active' if page == 'incidents' }}">Incidents</a>
+      <a href="/ui/evaluation" class="{{ 'active' if page == 'evaluation' }}">Evaluation</a>
+      <a href="/ui/health" class="{{ 'active' if page == 'health' }}">System Health</a>
+      <a href="/docs" target="_blank" rel="noopener">API</a>
+      <a href="/metrics" target="_blank" rel="noopener">Metrics</a>
+    </nav>
+    <div class="spacer"></div>
+    <span class="pill" id="live-indicator"><span class="dot"></span> checking…</span>
+    <span class="pill">model: {{ llm_model if llm_enabled else 'disabled' }}</span>
+    {% if active_fault %}
+      <span class="pill" style="color:var(--high);border-color:rgba(251,146,60,0.5)">
+        <span class="dot" style="background:var(--high)"></span> fault: {{ active_fault.scenario }}
+      </span>
+    {% endif %}
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    Advisory system: the LLM never executes commands. Every diagnosis requires human validation before remediation.
+    Zero-cost, local-only (Ollama + Prometheus + Grafana OSS).
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+AIOps Incident & Log Analyzer deployed as release "{{ .Release.Name }}" in namespace "{{ .Release.Namespace }}".
+
+1. Check the pods:
+   kubectl -n {{ .Release.Namespace }} get pods -l app.kubernetes.io/instance={{ .Release.Name }}
+
+2. Port-forward the UI:
+   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "aiops.fullname" . }} 8000:{{ .Values.service.port }}
+   then open http://localhost:8000/ui
+
+3. Inject a failure and analyze:
+   python scripts/inject_errors.py http-500-burst
+   python scripts/run_analyzer.py
+
+Replicas: {{ .Values.replicaCount }}   LLM model: {{ .Values.config.OLLAMA_MODEL }}
+
+The LLM is advisory only; it never executes commands. Every diagnosis requires human validation.

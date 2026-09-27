@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Evaluation</h1>
+<p class="sub">Runs all five ground-truth failure scenarios plus a normal-traffic control through the real pipeline and scores the result honestly.</p>
+
+<div class="card">
+  <div class="row">
+    <button id="eval-btn">Run evaluation</button>
+    <span class="muted">Window size: 200 lines · LLM advisory column is reported separately and may abstain.</span>
+  </div>
+</div>
+
+<div id="eval-output" class="mt">
+  {% if not has_report %}
+  <div class="state">No evaluation run yet in this session. Click <b>Run evaluation</b> to score the analyzer against ground truth.</div>
+  {% endif %}
+</div>
+{% endblock %}

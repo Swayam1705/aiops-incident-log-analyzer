@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aiops-analyzer-config
+  namespace: aiops
+  labels:
+    app.kubernetes.io/name: aiops-analyzer
+data:
+  APP_NAME: "checkout-service"
+  APP_ENV: "kind"
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  LOG_FILE: "/app/logs/app.log"
+  COLLECTOR_FILE_GLOB: "/app/logs/*.log"
+  LOG_WINDOW_SIZE: "2000"
+  ANALYZE_MIN_ERROR_LINES: "5"
+  # Scheduled analysis every 30s (one of the supported incident triggers).
+  ANALYZE_INTERVAL_SECONDS: "30"
+  SIMULATOR_ENABLED: "true"
+  SIMULATOR_INTERVAL_SECONDS: "1"
+  SIMULATOR_LOGS_PER_TICK: "2"
+  # Advisory LLM. Point at an in-cluster or host-reachable Ollama. Keep it internal;
+  # never expose Ollama publicly. Empty model disables the LLM stage gracefully.
+  LLM_ENABLED: "true"
+  OLLAMA_BASE_URL: "http://ollama.aiops.svc.cluster.local:11434"
+  OLLAMA_MODEL: "qwen2.5:1.5b"
+  INCIDENTS_DIR: "/app/incidents/generated"
+  REPORT_RETENTION_LIMIT: "200"
+  # Optional webhook. Leave empty to disable notifications (app still works).
+  NOTIFICATION_WEBHOOK_URL: ""

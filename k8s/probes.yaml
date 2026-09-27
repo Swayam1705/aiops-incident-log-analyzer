@@ -1,0 +1,46 @@
+# Reference probe configuration for the analyzer.
+#
+# The Deployment in deployment.yaml already defines these probes inline (the correct
+# production approach). This file documents them standalone and doubles as a
+# strategic-merge patch you can apply to re-tune probe timing without editing the
+# Deployment:
+#
+#   kubectl -n aiops patch deployment aiops-analyzer --patch-file k8s/probes.yaml
+#
+# Probe semantics demonstrated by this project:
+#   * liveness  -> /health/live  : fails only under the 'liveness-failure' fault,
+#                                  so Kubernetes restarts the pod (visible in events).
+#   * readiness -> /health/ready : fails under 'invalid-configuration' or
+#                                  'liveness-failure', removing the pod from Service
+#                                  endpoints so traffic is not sent to a bad replica.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiops-analyzer
+  namespace: aiops
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          startupProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 12
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3

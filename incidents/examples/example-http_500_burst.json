@@ -1,0 +1,112 @@
+{
+  "incident_id": "inc-20260926-143935-bfc03b",
+  "timestamp": "2026-09-26T14:39:35.357Z",
+  "service": "checkout-service",
+  "severity": "critical",
+  "severity_decision": {
+    "severity": "critical",
+    "score": 4,
+    "factors": [
+      "recognized incident type 'http_500_burst' -> base 'high'",
+      "correlated burst of 88 errors -> +1",
+      "high error volume (88 lines) -> +1"
+    ]
+  },
+  "summary": "Detected 88 correlated error line(s) on 'checkout-service' matching 'http_500_burst' (burst=True, severity=critical).",
+  "suspected_root_cause": "http_500_burst",
+  "evidence_lines": [
+    "[2026-09-26T14:38:39.345Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:39.695Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:40.045Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:40.395Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:40.745Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:41.095Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:41.445Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:41.795Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:42.145Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:42.495Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:42.845Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:43.195Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:43.545Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:43.895Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:44.245Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:44.595Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:44.945Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:45.295Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+    "[2026-09-26T14:38:45.645Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+    "[2026-09-26T14:38:45.995Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst"
+  ],
+  "confidence": 0.95,
+  "recommended_action": "HTTP 500 burst: Read recent application logs for the exception type and stack trace. (advisory - validate before acting)",
+  "analysis_source": "rule-based",
+  "status": "open",
+  "validation": {
+    "status": "pending",
+    "validated_by": null,
+    "validated_at": null,
+    "note": null
+  },
+  "rule_analysis": {
+    "suspected_root_cause": "http_500_burst",
+    "confidence": 0.95,
+    "evidence_lines": [
+      "[2026-09-26T14:38:39.345Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:39.695Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:40.045Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:40.395Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:40.745Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:41.095Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:41.445Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:41.795Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:42.145Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:42.495Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:42.845Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:43.195Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:43.545Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:43.895Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:44.245Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:44.595Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:44.945Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:45.295Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst",
+      "[2026-09-26T14:38:45.645Z] ERROR checkout-service unhandled exception while processing request, returning HTTP 500 pattern=http_500_burst",
+      "[2026-09-26T14:38:45.995Z] ERROR checkout-service request failed with HTTP 500 internal server error pattern=http_500_burst"
+    ],
+    "burst_detected": true,
+    "burst_size": 88,
+    "error_lines": 88,
+    "noise_lines": 7,
+    "reasons": [
+      "88 error(s) carry typed error.type=http_500_burst",
+      "pattern 'http_500_burst' dominates 100% of errors",
+      "detected burst of 88 correlated errors"
+    ],
+    "pattern_counts": {
+      "http_500_burst": 88
+    },
+    "numeric_signals": {
+      "duration_ms": 89.83
+    }
+  },
+  "ai_analysis": {
+    "available": false,
+    "model": null,
+    "summary": null,
+    "suspected_root_cause": null,
+    "evidence_lines": [],
+    "confidence": null,
+    "recommended_action": null,
+    "status": "disabled",
+    "error": "llm disabled or not configured",
+    "raw_excerpt": null,
+    "agreed_with_rules": null
+  },
+  "ground_truth": "http_500_burst",
+  "window": {
+    "size": 169,
+    "start": "2026-09-26T10:00:00Z",
+    "end": "2026-09-26T14:39:34.995Z",
+    "log_window_size": 2000
+  },
+  "runbook_id": "http_500_burst",
+  "schema_version": "1.0"
+}

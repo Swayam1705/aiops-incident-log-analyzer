@@ -1,0 +1,75 @@
+# Local non-Kubernetes development mode. The canonical deployment is kind + kubectl;
+# this compose stack is a convenience for laptop demos (app + Prometheus + Grafana).
+#
+#   docker compose -f docker/compose.yaml up --build
+#   app       -> http://localhost:8000/ui
+#   grafana   -> http://localhost:3000  (admin / admin)
+#   prometheus-> http://localhost:9090
+#
+# Ollama is NOT bundled. Point the app at a host Ollama with OLLAMA_BASE_URL, e.g.
+#   OLLAMA_BASE_URL=http://host.docker.internal:11434 (Docker Desktop)
+# or run the app on the host instead of in compose.
+
+name: aiops-incident-log-analyzer
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: aiops-incident-log-analyzer:local
+    environment:
+      APP_NAME: checkout-service
+      LOG_FILE: /app/logs/app.log
+      COLLECTOR_FILE_GLOB: /app/logs/*.log
+      INCIDENTS_DIR: /app/incidents/generated
+      LOG_WINDOW_SIZE: "2000"
+      ANALYZE_INTERVAL_SECONDS: "30"
+      LLM_ENABLED: "${LLM_ENABLED:-true}"
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://host.docker.internal:11434}"
+      OLLAMA_MODEL: "${OLLAMA_MODEL:-qwen2.5:1.5b}"
+      NOTIFICATION_WEBHOOK_URL: "${NOTIFICATION_WEBHOOK_URL:-}"
+    ports:
+      - "8000:8000"
+    volumes:
+      - app-logs:/app/logs
+      - app-incidents:/app/incidents/generated
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/health/ready"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+    volumes:
+      - ../observability/prometheus-compose.yml:/etc/prometheus/prometheus.yml:ro
+      - ../observability/alerts.yml:/etc/prometheus/alerts.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app
+
+  grafana:
+    image: grafana/grafana-oss:11.2.0
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ../observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  app-logs:
+  app-incidents:

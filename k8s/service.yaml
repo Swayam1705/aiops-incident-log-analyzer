@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiops-analyzer
+  namespace: aiops
+  labels:
+    app.kubernetes.io/name: aiops-analyzer
+spec:
+  # ClusterIP only: the analyzer is reached via port-forward locally and scraped
+  # in-cluster by Prometheus. It is not exposed to the public internet.
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: aiops-analyzer
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

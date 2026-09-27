@@ -1,0 +1,48 @@
+# --- secrets / environment ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets.yaml
+k8s/secret.yaml
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage/
+htmlcov/
+
+# --- generated runtime artifacts (kept local; not committed) ---
+logs/
+incidents/generated/*
+!incidents/generated/.gitkeep
+*.log
+*.log.*
+
+# --- editor / OS ---
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# --- node (if any tooling added later) ---
+node_modules/
+
+# --- large model weights must never be committed ---
+*.gguf
+*.safetensors
+models/
+ollama-models/

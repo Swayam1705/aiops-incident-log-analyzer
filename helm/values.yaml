@@ -1,0 +1,101 @@
+# Default values for the aiops-analyzer chart. These mirror the raw manifests in k8s/.
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: aiops-incident-log-analyzer
+  tag: local
+  pullPolicy: IfNotPresent
+
+# Two replicas by default (multi-replica demonstration).
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 8000
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+
+# Application configuration rendered into a ConfigMap.
+config:
+  APP_NAME: checkout-service
+  APP_ENV: helm
+  LOG_LEVEL: INFO
+  LOG_FORMAT: json
+  LOG_FILE: /app/logs/app.log
+  COLLECTOR_FILE_GLOB: /app/logs/*.log
+  LOG_WINDOW_SIZE: "2000"
+  ANALYZE_MIN_ERROR_LINES: "5"
+  ANALYZE_INTERVAL_SECONDS: "30"
+  SIMULATOR_ENABLED: "true"
+  SIMULATOR_INTERVAL_SECONDS: "1"
+  SIMULATOR_LOGS_PER_TICK: "2"
+  LLM_ENABLED: "true"
+  OLLAMA_BASE_URL: http://ollama.aiops.svc.cluster.local:11434
+  OLLAMA_MODEL: qwen2.5:1.5b
+  INCIDENTS_DIR: /app/incidents/generated
+  REPORT_RETENTION_LIMIT: "200"
+
+# Optional Secret values. Leave secret.create=false to run without a Secret; the
+# Deployment references these keys as optional so the app still works.
+secret:
+  create: false
+  # Values are only used when create=true. Never commit real values.
+  data:
+    NOTIFICATION_WEBHOOK_URL: ""
+    ADMIN_TOKEN: ""
+
+serviceAccount:
+  create: true
+  name: ""
+
+# Prometheus scraping via pod annotations (consumed by observability/prometheus.yml).
+metrics:
+  enabled: true
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8000"
+
+probes:
+  startup:
+    path: /health/ready
+    initialDelaySeconds: 3
+    periodSeconds: 5
+    failureThreshold: 12
+  liveness:
+    path: /health/live
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+  readiness:
+    path: /health/ready
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
